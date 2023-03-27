@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -15,6 +15,24 @@ import colors from '../styles/colors';
 import fonts from '../styles/fonts';
 
 export function UserIdentification() {
+  const [isFocused, setIsFocused] = useState(false)
+  const [isFilled, setIsFilled] = useState(false)
+  const [name, setName] = useState<string>()
+
+  function handleInputBlur() {
+    setIsFocused(false)
+    setIsFilled(!!name)
+  }
+
+  function handleInputFocus() {
+    setIsFocused(true)
+  }
+
+  function handleInputChange(value: string) {
+    setIsFilled(!!value)
+    setName(value)
+  }
+
   return(
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView 
@@ -23,18 +41,26 @@ export function UserIdentification() {
       >
         <View style={styles.content}>
           <View style={styles.form}>
-            <Text style={styles.emoji}>
-              😄  
-            </Text>
+            <View style={styles.header}>
+              <Text style={styles.emoji}>
+                { isFilled ? '😄' : '🙂' } 
+              </Text>
 
-            <Text style={styles.title}>
-              Como podemos {'\n'} 
-              chamar você?
-            </Text>
+              <Text style={styles.title}>
+                Como podemos {'\n'} 
+                chamar você?
+              </Text>
+            </View>
 
             <TextInput 
-              style={styles.input}
+              style={[
+                styles.input,
+                ( isFocused || isFilled ) && { borderColor: colors.green }
+              ]}
               placeholder='Digite um nome'
+              onBlur={handleInputBlur}
+              onFocus={handleInputFocus}
+              onChangeText={handleInputChange}
             />
 
             <View style={styles.footer}>
@@ -65,6 +91,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 54,
+  },
+  header: {
+    alignItems: 'center'
   },
   emoji: {
     fontSize: 48
