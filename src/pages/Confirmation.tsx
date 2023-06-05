@@ -10,8 +10,16 @@ import { Button } from '../components/Button';
 
 import fonts from '../styles/fonts';
 import colors from '../styles/colors';
+import { useNavigation } from '@react-navigation/core';
+import { AppNavigatorRoutesProps } from '../routes/stack.routes';
 
 export function Confirmation() {
+  const navigation = useNavigation<AppNavigatorRoutesProps>();
+
+  function handleMoveOn() {
+    navigation.navigate('PlantSelect');
+  }
+
   return(
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
@@ -31,6 +39,7 @@ export function Confirmation() {
         <View style={styles.footer}>
           <Button 
             title="Começar"
+            onPress={handleMoveOn}
           />
         </View>
 
