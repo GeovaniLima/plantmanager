@@ -8,11 +8,13 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Platform,
-  Keyboard
+  Keyboard,
+  Alert
 } from 'react-native';
 
 import { useNavigation } from "@react-navigation/native";
 import { AppNavigatorRoutesProps } from '../routes/stack.routes';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { Button } from '../components/Button';
 
@@ -26,7 +28,12 @@ export function UserIdentification() {
 
   const navigation = useNavigation<AppNavigatorRoutesProps>();
 
-  function handleSubmit() {
+  async function handleSubmit() {
+    if(!name)
+      return Alert.alert('Me diz como você gostaria de ser chamado 🥹.');
+
+    await AsyncStorage.setItem('@plantmanager:user', name);
+
     navigation.navigate('Confirmation')
   }
 
